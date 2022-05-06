@@ -49,6 +49,7 @@ public class PlayerStats : MonoBehaviour
             source.pitch = 0.5f;
         // Play Heal Animation
         source.PlayOneShot(potionHeal);
+        source.pitch = 1f;
         currentHealth += healAmount;
         if (currentHealth > maxHealth) {
             overHeal = currentHealth - maxHealth;
@@ -61,6 +62,7 @@ public class PlayerStats : MonoBehaviour
     public void Shield(int str) {
         source.pitch = 0.5f;
         source.PlayOneShot(potionHeal);
+        source.pitch = 1f;
         negateAmount = str;
         _hpUI.shieldIndicator(negateAmount);
     }

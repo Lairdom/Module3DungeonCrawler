@@ -6,7 +6,7 @@ public class BombScript : MonoBehaviour
 {
     [SerializeField] float bombTimer;
     [SerializeField] Sprite bomb2;
-    [SerializeField] AudioClip explosion;
+    [SerializeField] AudioClip explosion, pickUp;
     Animator _animator;
     GameObject player;
     bool exploded;
@@ -50,7 +50,9 @@ public class BombScript : MonoBehaviour
                 player.GetComponent<UseItem>().itemName = "Bomb";
                 player.GetComponent<UseItem>().bombAcquired = true;
                 player.GetComponent<UseItem>().bombCount = 10;
-                // Play Sound
+                player.GetComponent<AudioSource>().volume = 0.1f;
+                player.GetComponent<AudioSource>().PlayOneShot(pickUp);
+                player.GetComponent<AudioSource>().volume = 0.2f;
                 Destroy(this.gameObject,1);
             }
         }

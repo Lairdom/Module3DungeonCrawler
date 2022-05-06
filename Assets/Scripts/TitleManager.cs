@@ -17,4 +17,10 @@ public class TitleManager : MonoBehaviour
     {
         loadingText = GameObject.Find("Loading");
     }
+
+    void Update () {
+        if (Input.GetButtonDown("Fire1")) {
+            GoToLevel();
+        }
+    }
 }
