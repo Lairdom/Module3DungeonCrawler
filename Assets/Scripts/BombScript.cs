@@ -62,7 +62,7 @@ public class BombScript : MonoBehaviour
                 player.GetComponent<AudioSource>().PlayOneShot(pickUp);
                 player.GetComponent<AudioSource>().volume = 0.2f;
                 gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                Destroy(this.gameObject,2);
+                Destroy(this.gameObject,2.2f);
             }
         }
         else {

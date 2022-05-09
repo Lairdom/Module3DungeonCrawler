@@ -19,7 +19,8 @@ public class KeyScript : MonoBehaviour
                 StartCoroutine(_messageUI.showMessage());
                 player.GetComponent<AudioSource>().pitch = 1;
                 player.GetComponent<AudioSource>().PlayOneShot(keyPickup);
-                Destroy(gameObject);
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                Destroy(gameObject,2.2f);
             }
             else if (keyType == "GoldKey") {
                 // player.GetComponent<PlayerStats>().keys += 1;
@@ -27,7 +28,8 @@ public class KeyScript : MonoBehaviour
                 StartCoroutine(_messageUI.showMessage());
                 player.GetComponent<AudioSource>().pitch = 0.5f;
                 player.GetComponent<AudioSource>().PlayOneShot(keyPickup);
-                Destroy(gameObject);
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                Destroy(gameObject,2.2f);
             }
         }
     }

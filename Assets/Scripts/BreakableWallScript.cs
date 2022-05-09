@@ -15,7 +15,6 @@ public class BreakableWallScript : MonoBehaviour
     void Update()
     {
         if (gameObject.GetComponent<Activate>().activate == true) {
-            Debug.Log("I can feel air coming from behind this wall");
             _messageUI.setMessage("Looks breakable");
             StartCoroutine(_messageUI.showMessage());
         }
