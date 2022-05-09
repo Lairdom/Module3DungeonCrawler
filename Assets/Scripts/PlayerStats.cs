@@ -8,7 +8,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] HealthUI _hpUI;
     [SerializeField] KeysUI _keysUI;
-    [SerializeField] int maxHealth, currentHealth;
+    public int maxHealth, currentHealth;
     public int keys, damage;
     [SerializeField] AudioClip potionHeal;
     AudioSource source;
@@ -55,7 +55,6 @@ public class PlayerStats : MonoBehaviour
             overHeal = currentHealth - maxHealth;
             currentHealth = maxHealth;
         }
-        _hpUI.alterHP(currentHealth, maxHealth);
         return overHeal;
     }
 
@@ -91,6 +90,7 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _hpUI.alterHP(currentHealth, maxHealth);
         if (invulnerable == true)
             invFrames();
     }

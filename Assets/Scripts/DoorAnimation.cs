@@ -6,7 +6,7 @@ public class DoorAnimation : MonoBehaviour
 {
     [SerializeField] Sprite openDoor, closedDoor;
     [SerializeField] KeysUI _keysUI;
-    [SerializeField] LockedUI _lockedUI;
+    MessageUI _lockedUI;
     [SerializeField] AudioClip doorUnlock;
     public bool opened, locked;
     GameObject player;
@@ -26,7 +26,7 @@ public class DoorAnimation : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
-        _lockedUI = GameObject.Find("LockedMessage").GetComponent<LockedUI>();
+        _lockedUI = GameObject.Find("Message").GetComponent<MessageUI>();
         UpdateState();
     }
 
@@ -37,6 +37,8 @@ public class DoorAnimation : MonoBehaviour
             keys = player.GetComponent<PlayerStats>().keys;
             if (gameObject.GetComponent<Activate>().activate == true && locked == true) {
                 if (keys > 0) {
+                    _lockedUI.setMessage("Key Used");
+                    StartCoroutine(_lockedUI.showMessage());
                     player.GetComponent<AudioSource>().pitch = 1;
                     player.GetComponent<AudioSource>().PlayOneShot(doorUnlock);
                     keys -= 1;
@@ -47,8 +49,8 @@ public class DoorAnimation : MonoBehaviour
                     player.GetComponent<PlayerStats>().keys = keys;
                 }
                 else {
-                    Debug.Log("Door is Locked");
-                    StartCoroutine(_lockedUI.showLocked());
+                    _lockedUI.setMessage("Locked");
+                    StartCoroutine(_lockedUI.showMessage());
                 } 
             }
             else if (gameObject.GetComponent<Activate>().activate == true && locked == false) {

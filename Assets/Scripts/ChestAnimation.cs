@@ -6,10 +6,10 @@ public class ChestAnimation : MonoBehaviour
 {
     [SerializeField] Sprite openChest;
     [SerializeField] KeysUI _keysUI;
-    [SerializeField] LockedUI _lockedUI;
+    MessageUI _lockedUI;
     [SerializeField] AudioClip chestUnlock;
     public string type;
-    [SerializeField] GameObject silverKey, goldKey, coin, potion, bigPotion, shieldPotion, item;
+    [SerializeField] GameObject silverKey, goldKey, coin, potion, bigPotion, shieldPotion, heart, item;
     public bool opened = false, locked = false;
     GameObject player;
     int keys;
@@ -35,6 +35,9 @@ public class ChestAnimation : MonoBehaviour
             item.GetComponent<SpriteRenderer>().enabled = true;
             item.GetComponent<Collider2D>().enabled = true;
         }
+        if (type == "HeartChest") {
+            Instantiate(heart, new Vector2(transform.position.x, transform.position.y+0.3f),transform.rotation);
+        }
         gameObject.GetComponent<Collider2D>().enabled = false;
         gameObject.GetComponent<Activate>().enabled = false;
         this.enabled = false;
@@ -45,7 +48,7 @@ public class ChestAnimation : MonoBehaviour
     {
         player = GameObject.Find("Player");
         _keysUI = GameObject.Find("Keys").GetComponent<KeysUI>();
-        _lockedUI = GameObject.Find("LockedMessage").GetComponent<LockedUI>();
+        _lockedUI = GameObject.Find("Message").GetComponent<MessageUI>();
     }
 
     // Update is called once per frame
@@ -55,6 +58,8 @@ public class ChestAnimation : MonoBehaviour
             keys = player.GetComponent<PlayerStats>().keys;
             if (gameObject.GetComponent<Activate>().activate == true && locked == true) {
                 if (keys > 0) { 
+                    _lockedUI.setMessage("Key Used");
+                    StartCoroutine(_lockedUI.showMessage());
                     player.GetComponent<AudioSource>().pitch = 1;
                     player.GetComponent<AudioSource>().PlayOneShot(chestUnlock);
                     keys -= 1;
@@ -66,8 +71,8 @@ public class ChestAnimation : MonoBehaviour
                     checkContents();
                 }
                 else {
-                    Debug.Log("Chest is Locked");
-                    StartCoroutine(_lockedUI.showLocked());
+                    _lockedUI.setMessage("Locked");
+                    StartCoroutine(_lockedUI.showMessage());
                 } 
             }
             else if (gameObject.GetComponent<Activate>().activate == true && locked == false) {

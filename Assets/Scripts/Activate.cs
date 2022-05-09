@@ -14,6 +14,8 @@ public class Activate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (activate == true) {
+            Debug.Log("Activated");
+        }
     }
 }

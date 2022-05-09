@@ -8,11 +8,9 @@ public class WireCross : MonoBehaviour
 
     
     //private void OnTriggerEnter2D(Collider2D col) {
-    private void OnCollisionEnter2D(Collision2D col) {
-        Debug.Log(col.gameObject.name);
-        if (col.gameObject.name == "Coin(Clone)") {
+    private void OnTriggerEnter2D(Collider2D col) {
+        if (col.name == "Coin(Clone)") {
             player.transform.position = transform.position;
-            Debug.Log("Toimii");
         }
     }
 

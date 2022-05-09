@@ -10,12 +10,18 @@ public class ItemUI : MonoBehaviour
     [SerializeField] Sprite fullPotion, halfPotion, emptyPotion, bomb;
     [SerializeField] TextMeshProUGUI _itemCountUI;
     GameObject player;
-    int bombCount;
+    int bombCount, coinCount;
     bool bombItem, potionItem;
 
     public void ChangeIcon(string icon)
     {
-        if (icon == "FullPotion") {
+        if (icon == "Coin") {
+            item.GetComponent<Image>().sprite = null;
+            _itemCountUI.enabled = false;
+            potionItem = false;
+            bombItem = false;
+        }
+        else if (icon == "FullPotion") {
             item.GetComponent<Image>().sprite = fullPotion;
             _itemCountUI.enabled = false;
             potionItem = true;
@@ -46,7 +52,6 @@ public class ItemUI : MonoBehaviour
     {
         player = GameObject.Find("Player");
         ChangeIcon(player.GetComponent<UseItem>().itemName);
-        bombCount = player.GetComponent<UseItem>().bombCount;
     }
 
     // Update is called once per frame
@@ -54,18 +59,21 @@ public class ItemUI : MonoBehaviour
     {
         if (player != null) {
             bombCount = player.GetComponent<UseItem>().bombCount;
+            coinCount = player.GetComponent<UseItem>().coinCount;
+            
+
+            if (bombItem && bombCount <= 0) {
+                item.GetComponent<Image>().color = new Color(1,1,1,0.3f);
+                _itemCountUI.text = ""+bombCount;
+            }
+            else if (bombItem) {
+                item.GetComponent<Image>().color = new Color(1,1,1,1f);
+                _itemCountUI.text = ""+bombCount;
+            }
+            else if (potionItem && player.GetComponent<UseItem>().coolDown > 0)  
+                item.GetComponent<Image>().color = new Color(1,1,1,0.3f);
+            else 
+                item.GetComponent<Image>().color = new Color(1,1,1,1f);
         }
-        if (bombItem && bombCount <= 0) {
-            item.GetComponent<Image>().color = new Color(1,1,1,0.3f);
-            _itemCountUI.text = ""+bombCount;
-        }
-        else if (bombItem) {
-            item.GetComponent<Image>().color = new Color(1,1,1,1f);
-            _itemCountUI.text = ""+bombCount;
-        }
-        else if (potionItem && player.GetComponent<UseItem>().coolDown > 0)  
-            item.GetComponent<Image>().color = new Color(1,1,1,0.3f);
-        else 
-            item.GetComponent<Image>().color = new Color(1,1,1,1f);
     }   
 }

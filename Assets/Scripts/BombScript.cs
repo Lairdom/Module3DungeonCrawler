@@ -7,6 +7,7 @@ public class BombScript : MonoBehaviour
     [SerializeField] float bombTimer;
     [SerializeField] Sprite bomb2;
     [SerializeField] AudioClip explosion, pickUp;
+    MessageUI _messageUI;
     Animator _animator;
     GameObject player;
     bool exploded;
@@ -22,6 +23,11 @@ public class BombScript : MonoBehaviour
                 col.gameObject.GetComponent<PlayerStats>().TakeDamage(25);
                 gameObject.GetComponent<CircleCollider2D>().enabled = false;
             }
+            if (col.name == "BreakableWall") {
+                col.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                col.gameObject.GetComponent<Collider2D>().enabled = false;
+                col.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+            }
         }
     }
 
@@ -30,7 +36,7 @@ public class BombScript : MonoBehaviour
         player.GetComponent<AudioSource>().PlayOneShot(explosion);
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
         yield return new WaitForSeconds(1);
-        Destroy(this.gameObject,0.5f);
+        Destroy(this.gameObject,0.4f);
     }
 
     // Start is called before the first frame update
@@ -39,7 +45,7 @@ public class BombScript : MonoBehaviour
         player = GameObject.Find("Player");
         bombTimer = 3f;
         _animator = gameObject.GetComponent<Animator>();
-        
+        _messageUI = GameObject.Find("Message").GetComponent<MessageUI>();
     }
 
     // Update is called once per frame
@@ -50,10 +56,13 @@ public class BombScript : MonoBehaviour
                 player.GetComponent<UseItem>().itemName = "Bomb";
                 player.GetComponent<UseItem>().bombAcquired = true;
                 player.GetComponent<UseItem>().bombCount = 10;
+                _messageUI.setMessage("10 Bombs Obtained");
+                StartCoroutine(_messageUI.showMessage());
                 player.GetComponent<AudioSource>().volume = 0.1f;
                 player.GetComponent<AudioSource>().PlayOneShot(pickUp);
                 player.GetComponent<AudioSource>().volume = 0.2f;
-                Destroy(this.gameObject,1);
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                Destroy(this.gameObject,2);
             }
         }
         else {

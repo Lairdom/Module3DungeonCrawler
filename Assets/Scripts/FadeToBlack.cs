@@ -57,7 +57,6 @@ public class FadeToBlack : MonoBehaviour
             dead = player.GetComponent<PlayerStats>().dead;
         }
         if (dead == true) {
-            Debug.Log("Kuolit");
             if (Input.anyKey) {
                 QuitGame();
             }

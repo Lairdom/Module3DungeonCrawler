@@ -133,6 +133,8 @@ MonoBehaviour:
   potion: {fileID: 5420735359345680979, guid: b8d8c60d9a38de04aaecc0447059e157, type: 3}
   bigPotion: {fileID: 8157450079154610402, guid: 590d4ee14f805c547ad7a6ca7b52ad70, type: 3}
   shieldPotion: {fileID: 5420735359345680979, guid: db7fa4001614b054e828eeaad9eb3b96, type: 3}
+  heart: {fileID: 293654660532765216, guid: 512fbeda6c02b5e48ab84b942a540407, type: 3}
+  item: {fileID: 0}
   opened: 0
   locked: 0
 --- !u!114 &-4402325666585671391
