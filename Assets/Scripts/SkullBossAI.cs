@@ -8,12 +8,15 @@ public class SkullBossAI : MonoBehaviour
     AudioSource source;
     [SerializeField] AudioClip bossMusic;
     [SerializeField] BossHealthUI _hpUI;
+    [SerializeField] GameObject skull;
     public Image hpBarLeft, hpBarRight, hpBarMiddle, hpBar;
     GameObject player, tempEnemy1, tempEnemy2, tempEnemy3, tempEnemy4;
+    GameObject newSkull1, newSkull2, newSkull3, newSkull4;
     public int moveSpeed, damage, maxHealth;
-    Vector3 direction, scaleChange;
-    bool transformed, moveEnemy1, moveEnemy2, moveEnemy3, moveEnemy4;
+    Vector3 direction, scaleChange, skullsPosition;
+    bool transformed, moveEnemy1, moveEnemy2, moveEnemy3, moveEnemy4, lerping;
     int currentHealth;
+    float specialCooldown, t;
     
     private void OnTriggerStay2D(Collider2D col) {
         if (col.name == "Player") {
@@ -43,17 +46,23 @@ public class SkullBossAI : MonoBehaviour
         gameObject.GetComponent<AudioSource>().Play();
         tempEnemy1.GetComponent<SpriteRenderer>().enabled = false;
         moveEnemy2 = true;
+        tempEnemy2.transform.localScale = new Vector3(1,1,1);
         yield return new WaitForSeconds(2f);
+        Destroy(tempEnemy1);
         transform.localScale += scaleChange;
         gameObject.GetComponent<AudioSource>().Play();
         tempEnemy2.GetComponent<SpriteRenderer>().enabled = false;
         moveEnemy3 = true;
+        tempEnemy3.transform.localScale = new Vector3(1,1,1);
         yield return new WaitForSeconds(2f);
+        Destroy(tempEnemy2);
         transform.localScale += scaleChange;
         gameObject.GetComponent<AudioSource>().Play();
         tempEnemy3.GetComponent<SpriteRenderer>().enabled = false;
         moveEnemy4 = true;
+        tempEnemy4.transform.localScale = new Vector3(1,1,1);
         yield return new WaitForSeconds(2f);
+        Destroy(tempEnemy3);
         transform.localScale += scaleChange;
         gameObject.GetComponent<AudioSource>().Play();
         tempEnemy4.GetComponent<SpriteRenderer>().enabled = false;
@@ -62,7 +71,42 @@ public class SkullBossAI : MonoBehaviour
         hpBarRight.enabled = true;
         hpBarMiddle.enabled = true;
         hpBar.enabled = true;
+        Destroy(tempEnemy4,2f);
         BossHealthBar();
+    }
+
+    IEnumerator TriggerSpecialAttack() {
+        gameObject.GetComponent<HealthManager>().stunned = true;
+        yield return new WaitForSeconds(0.2f);
+        scaleChange = new Vector3(0.2f,0.2f,0);
+        transform.localScale -= scaleChange;
+        yield return new WaitForSeconds(0.6f);
+        transform.localScale += scaleChange*2;
+        skullsPosition = transform.position;
+        newSkull1 = Instantiate(skull, transform.position, transform.rotation);
+        newSkull1.GetComponent<SkullAI>().enabled = false;
+        newSkull2 = Instantiate(skull, transform.position, transform.rotation);
+        newSkull2.GetComponent<SkullAI>().enabled = false;
+        newSkull3 = Instantiate(skull, transform.position, transform.rotation);
+        newSkull3.GetComponent<SkullAI>().enabled = false;
+        newSkull4 = Instantiate(skull, transform.position, transform.rotation);
+        newSkull4.GetComponent<SkullAI>().enabled = false;
+        lerping = true;
+        t = 0;
+        yield return new WaitForSeconds(0.6f);
+        transform.localScale -= scaleChange;
+        yield return new WaitForSeconds(1f);
+        lerping = false;
+        newSkull1.GetComponent<SkullAI>().enabled = true;
+        newSkull1.GetComponent<SkullAI>().moveSpeed = 3;
+        newSkull2.GetComponent<SkullAI>().enabled = true;
+        newSkull2.GetComponent<SkullAI>().moveSpeed = 3.2f;
+        newSkull3.GetComponent<SkullAI>().enabled = true;
+        newSkull3.GetComponent<SkullAI>().moveSpeed = 2.8f;
+        newSkull4.GetComponent<SkullAI>().enabled = true;
+        newSkull1.GetComponent<SkullAI>().moveSpeed = 3.1f;
+        yield return new WaitForSeconds(2f);
+        gameObject.GetComponent<HealthManager>().stunned = false;
     }
 
     // Start is called before the first frame update
@@ -96,6 +140,28 @@ public class SkullBossAI : MonoBehaviour
                 gameObject.GetComponent<AudioSource>().Play();
                 transform.position += direction * moveSpeed * Time.deltaTime;
             }
+            if (currentHealth < 75 && specialCooldown <= 0 && distanceVector.magnitude > 3) {
+                // StartCoroutine(TriggerSpecialAttack());
+                specialCooldown = Random.Range(15,30);
+                Debug.Log(specialCooldown);
+            }
+            if (newSkull1 != null && lerping) {
+                newSkull1.transform.position = Vector2.Lerp(skullsPosition,
+                    new Vector2(transform.position.x-2, transform.position.y+2), t);
+            }
+            if (newSkull2 != null && lerping) {
+                newSkull2.transform.position = Vector2.Lerp(skullsPosition,
+                    new Vector2(transform.position.x+2, transform.position.y+2), t);
+            }
+            if (newSkull3 != null && lerping) {
+                newSkull3.transform.position = Vector2.Lerp(skullsPosition,
+                    new Vector2(transform.position.x-2, transform.position.y-2), t);
+            }
+            if (newSkull4 != null && lerping) {
+                newSkull4.transform.position = Vector2.Lerp(skullsPosition,
+                    new Vector2(transform.position.x+2, transform.position.y-2), t);
+            }
+            t += Time.deltaTime*8;
         }
         
         // UI Management
@@ -139,6 +205,5 @@ public class SkullBossAI : MonoBehaviour
             if (tempEnemy4.transform.localPosition == new Vector3(0,0,0))
                 moveEnemy4 = false;
         }
-            
     }
 }

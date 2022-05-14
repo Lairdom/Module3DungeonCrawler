@@ -5,7 +5,8 @@ using UnityEngine;
 public class SkullAI : MonoBehaviour
 {
     GameObject player;
-    public int moveSpeed, damage, maxHealth;
+    public float moveSpeed;
+    public int damage, maxHealth;
     Vector3 direction, startPoint, endPoint;
     float t;
 
