@@ -14,31 +14,9 @@ public class FadeToBlack : MonoBehaviour
 
     public void FadeOut() { 
         startFade = true;
-        transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().enabled = false;
-        transform.GetChild(1).transform.GetChild(1).GetComponent<Image>().enabled = false;
-        transform.GetChild(1).transform.GetChild(2).GetComponent<Image>().enabled = false;
-        transform.GetChild(1).transform.GetChild(3).GetComponent<Image>().enabled = false;
-        transform.GetChild(2).GetComponent<TextMeshProUGUI>().enabled = false;
-        transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().enabled = false;
-        transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().enabled = false;
-        transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().enabled = false;
-        transform.GetChild(3).transform.GetChild(3).GetComponent<Image>().enabled = false;
-        transform.GetChild(3).transform.GetChild(4).GetComponent<Image>().enabled = false;
-        transform.GetChild(3).transform.GetChild(5).GetComponent<TextMeshProUGUI>().enabled = false;
     }
     public void FadeIn() { 
         fadeIn = true;
-        transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().enabled = true;
-        transform.GetChild(1).transform.GetChild(1).GetComponent<Image>().enabled = true;
-        transform.GetChild(1).transform.GetChild(2).GetComponent<Image>().enabled = true;
-        transform.GetChild(1).transform.GetChild(3).GetComponent<Image>().enabled = true;
-        transform.GetChild(2).GetComponent<TextMeshProUGUI>().enabled = true;
-        transform.GetChild(3).transform.GetChild(0).GetComponent<Image>().enabled = true;
-        transform.GetChild(3).transform.GetChild(1).GetComponent<Image>().enabled = true;
-        transform.GetChild(3).transform.GetChild(2).GetComponent<Image>().enabled = true;
-        transform.GetChild(3).transform.GetChild(3).GetComponent<Image>().enabled = true;
-        transform.GetChild(3).transform.GetChild(4).GetComponent<Image>().enabled = true;
-        transform.GetChild(3).transform.GetChild(5).GetComponent<TextMeshProUGUI>().enabled = true;
     }
 
     public void QuitGame() {
