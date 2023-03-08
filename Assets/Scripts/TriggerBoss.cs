@@ -8,7 +8,7 @@ public class TriggerBoss : MonoBehaviour
 {
     AudioSource source;
     [SerializeField] AudioClip victoryTheme;
-    [SerializeField] GameObject boss, chest;
+    [SerializeField] GameObject boss, bossHPbar, chest;
     GameObject UI, newChest;
     
     bool triggered = false, end = false;
@@ -16,29 +16,28 @@ public class TriggerBoss : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col) {
         if (col.tag == "Player") {
             triggered = true;
-            gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
-            gameObject.transform.GetChild(0).GetComponent<Collider2D>().enabled = true;
-            gameObject.GetComponent<Collider2D>().enabled = false;
+            transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+            transform.GetChild(0).GetComponent<Collider2D>().enabled = true;
+            GetComponent<Collider2D>().enabled = false;
             boss.GetComponent<SkullBossAI>().enabled = true;
         }
     }
 
     IEnumerator End() {
         source.Stop();
-        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
-        gameObject.transform.GetChild(0).GetComponent<Collider2D>().enabled = false;
+        transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+        transform.GetChild(0).GetComponent<Collider2D>().enabled = false;
         source.PlayOneShot(victoryTheme);
         end = true;
         yield return new WaitForSeconds(2);
         UI.GetComponent<FadeToBlack>().FadeOut();
-        UI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().enabled = true;
-        UI.transform.GetChild(5).gameObject.GetComponent<TextMeshProUGUI>().text = "You Win";
+        UI.transform.GetChild(6).GetComponent<TextMeshProUGUI>().enabled = true;
+        UI.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = "You Win";
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        boss = GameObject.Find("SkullBoss");
         source = GameObject.Find("UI").GetComponent<AudioSource>();
         UI = GameObject.Find("UI");
     }

@@ -71,11 +71,11 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update() {
         playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (Input.GetButtonDown("Jump")) {
+        if (Input.GetButtonDown("NextItem") || Input.GetButtonDown("Controller-NextItem")) {
             gameObject.GetComponent<UseItem>().nextItem();
         }
-        _animator.SetBool("PlayerAttack",Input.GetButtonDown("Fire1"));
-        if (Input.GetButtonDown("Fire1")) {
+        _animator.SetBool("PlayerAttack",Input.GetButtonDown("Attack"));
+        if (Input.GetButtonDown("Attack") || Input.GetButtonDown("Controller-Attack")) {
             if (delayTimer <= 0f) {
                 transform.GetChild(0).gameObject.GetComponent<AudioSource>().Play();
                 if (direction == "Up") {
@@ -94,16 +94,20 @@ public class PlayerMovement : MonoBehaviour
                 delayTimer = 0.5f;
             }
         }
-        if (Input.GetButtonDown("Fire3")) {
+
+        if (Input.GetButtonDown("UseItem") || Input.GetButtonDown("Controller-UseItem")) {
             if (delayTimer <= 0f && itemDelay <= 0) {
                 gameObject.GetComponent<UseItem>().itemUse();
                 itemDelay = 1f;
             }
         }
         
-        if (Input.GetButtonDown("Fire2")) {
+        if (Input.GetButtonDown("Examine") || Input.GetButtonDown("Controller-Examine")) {
             examine = true;
-            
+        }
+
+        if (Input.GetButtonDown("Quit")) {
+            Application.Quit();
         }
         delayTimer -= Time.deltaTime;
         itemDelay -= Time.deltaTime;

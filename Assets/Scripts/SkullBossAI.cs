@@ -66,7 +66,9 @@ public class SkullBossAI : MonoBehaviour
         transform.localScale += scaleChange;
         gameObject.GetComponent<AudioSource>().Play();
         tempEnemy4.GetComponent<SpriteRenderer>().enabled = false;
-        source.PlayOneShot(bossMusic);
+        source.clip = bossMusic;
+        source.volume = 0.16f;
+        source.Play();
         hpBarLeft.enabled = true;
         hpBarRight.enabled = true;
         hpBarMiddle.enabled = true;

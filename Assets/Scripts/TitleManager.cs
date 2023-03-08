@@ -7,10 +7,14 @@ using TMPro;
 public class TitleManager : MonoBehaviour
 {
     GameObject loadingText;
-    // Start is called before the first frame update
+
     public void GoToLevel() {
         SceneManager.LoadScene("Dungeon1");
         loadingText.GetComponent<TextMeshProUGUI>().enabled = true;
+    }
+
+    public void Quitgame() {
+        Application.Quit();
     }
 
     void Start() 
@@ -19,8 +23,11 @@ public class TitleManager : MonoBehaviour
     }
 
     void Update () {
-        if (Input.GetButtonDown("Fire1")) {
+        if (Input.GetButtonDown("Controller-Examine")) {
             GoToLevel();
+        }
+        else if (Input.GetButtonDown("Controller-UseItem")) {
+            Quitgame();
         }
     }
 }
